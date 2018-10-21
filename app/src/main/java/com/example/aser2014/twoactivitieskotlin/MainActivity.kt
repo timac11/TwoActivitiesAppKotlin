@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
-
             override fun onFinish() {}
         }
         (timer as CountDownTimer).start()
