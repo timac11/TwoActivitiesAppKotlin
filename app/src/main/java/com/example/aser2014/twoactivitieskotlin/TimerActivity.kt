@@ -79,7 +79,7 @@ class TimerActivity : AppCompatActivity() {
                     it.text = STOP
                 } else {
                     timer!!.cancel()
-                    it!!.text = START
+                    it.text = START
                 }
             }
         }
