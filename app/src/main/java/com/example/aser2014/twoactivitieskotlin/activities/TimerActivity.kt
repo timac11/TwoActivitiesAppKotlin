@@ -149,7 +149,7 @@ class TimerActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(this.getString(R.string.currentTime), currentTime)
-        outState.putString(this.getString(R.string.buttonState), button!!.text as String)
+        outState.putString(this.getString(R.string.buttonState), button?.text as String? ?: START)
         super.onSaveInstanceState(outState)
     }
 
