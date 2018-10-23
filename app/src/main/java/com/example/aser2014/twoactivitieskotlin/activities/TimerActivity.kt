@@ -30,7 +30,7 @@ class TimerActivity : AppCompatActivity() {
     private var hundrets: Array<String>? = null
 
     init {
-        this.timer = createTimer((currentTime * 1000).toLong())
+        timer = createTimer((currentTime * 1000).toLong())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
