@@ -30,7 +30,7 @@ class TimerActivity : AppCompatActivity() {
     private var hundrets: Array<String>? = null
 
     init {
-        timer = createTimer((currentTime * 1000).toLong())
+        timer = createTimer(1001L)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +52,7 @@ class TimerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        timer = createTimer(allTime - currentTime * 1000)
+        timer = createTimer(allTime - (currentTime - 1) * 1000)
         button?.let {
             if (it.text == STOP) {
                 timer.start()
