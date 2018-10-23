@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    tools:context="com.example.aser2014.twoactivitieskotlin.MainActivity">
+    tools:context="com.example.aser2014.twoactivitieskotlin.activities.MainActivity">
 
     <ImageView
         android:id="@+id/icon"
