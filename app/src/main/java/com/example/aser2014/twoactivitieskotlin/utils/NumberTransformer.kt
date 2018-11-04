@@ -30,7 +30,7 @@ fun getCurrentTimeInStringFormat(resources: Resources, millsAfterStart: Int): St
 
     when {
         currentHundread != 0 -> {
-            var currentHundreadString = hundrets[currentHundread]
+            val currentHundreadString = hundrets[currentHundread]
             currentTime.append(currentHundreadString).append(" ")
             if (currentDozen > 1) {
                 currentDozenString = dozens[currentDozen]
