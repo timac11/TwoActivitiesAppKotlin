@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.example.aser2014.twoactivitieskotlin.R
-import java.lang.StringBuilder
+import com.example.aser2014.twoactivitieskotlin.utils.getCurrentTimeInStringFormat
 
 class TimerActivity : AppCompatActivity() {
 
@@ -15,19 +15,13 @@ class TimerActivity : AppCompatActivity() {
     private val interval: Long = 1000
     private val allTime: Long = 1001000
     private var currentTime = 1
-    private var button: Button? = null
-    private var textView: TextView? = null
+    private lateinit var button: Button
+    private lateinit var textView: TextView
     private val START = "Start"
     private val STOP = "Stop"
-    private var currentUnit = 0
-    private var currentDozen = 0
-    private var currentHundread = 0
-    private var currentUnitString = ""
-    private var currentDozenString = ""
-    private var currentHundreadString = ""
-    private var units: Array<String>? = null
-    private var dozens: Array<String>? = null
-    private var hundrets: Array<String>? = null
+    private lateinit var units: Array<String>
+    private lateinit var dozens: Array<String>
+    private lateinit var hundrets: Array<String>
 
     init {
         timer = createTimer(1001L)
@@ -36,13 +30,13 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
-        button = findViewById<Button>(R.id.button)
-        textView = findViewById<TextView>(R.id.textView)
-        units = resources.getStringArray(R.array.currentUnit)
+        button = findViewById(R.id.button)
+        textView = findViewById(R.id.textView)
+        /*units = resources.getStringArray(R.array.currentUnit)
         dozens = resources.getStringArray(R.array.currentDozen)
-        hundrets = resources.getStringArray(R.array.currentHundred)
+        hundrets = resources.getStringArray(R.array.currentHundred)*/
         val oclButtonListener = createBtnListener()
-        button!!.setOnClickListener(oclButtonListener)
+        button.setOnClickListener(oclButtonListener)
     }
 
     override fun onStop() {
@@ -53,7 +47,7 @@ class TimerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         timer = createTimer(allTime - (currentTime - 1) * 1000)
-        button?.let {
+        button.let {
             if (it.text == STOP) {
                 timer.start()
             } else {
@@ -66,7 +60,7 @@ class TimerActivity : AppCompatActivity() {
         return object : CountDownTimer(allTime, interval) {
             override fun onTick(millisUntilFinished: Long) {
                 currentTime += 1
-                textView?.let { it.text = getCurrentNumber(currentTime) }
+                textView.text = getCurrentNumber(currentTime)
             }
             override fun onFinish() {}
         }
@@ -74,7 +68,7 @@ class TimerActivity : AppCompatActivity() {
 
     private fun createBtnListener(): View.OnClickListener {
         return View.OnClickListener {
-            button?.let {
+            button.let {
                 if (it.text == START) {
                     timer.start()
                     it.text = STOP
@@ -87,76 +81,32 @@ class TimerActivity : AppCompatActivity() {
     }
 
     private fun getCurrentNumber(millsAfterStart: Int): String {
-        currentUnit = millsAfterStart % 100
-        if (millsAfterStart <= 19) {
-            return units!![currentUnit]
-        }
         if (millsAfterStart == 1000) {
             finishTimer()
-            return getResources().getString(R.string.lastNum)
         }
-        currentUnit = millsAfterStart % 100 % 10
-        currentDozen = millsAfterStart / 10 % 10
-        currentHundread = millsAfterStart / 100
-        currentUnitString = units!![currentUnit]
-        currentDozenString = dozens!![currentDozen]
 
-
-        val currentTime = StringBuilder()
-
-        when {
-            currentHundread != 0 -> {
-                currentHundreadString = hundrets!![currentHundread]
-                currentTime.append(currentHundreadString).append(" ")
-                if (currentDozen > 1) {
-                    currentDozenString = dozens!![currentDozen]
-                    currentTime.append(currentDozenString).append(" ")
-                }
-                if (millsAfterStart % 100 <= 19) {
-                    currentUnit = millsAfterStart % 100
-                }
-                if (currentUnit != 0) {
-                    currentUnitString = units!![currentUnit]
-                    currentTime.append(currentUnitString)
-                }
-                return currentTime.toString()
-            }
-            currentDozen != 0 -> {
-                currentDozenString = dozens!![currentDozen]
-                currentTime.append(currentDozenString).append(" ")
-                if (currentUnit != 0) {
-                    currentUnitString = units!![currentUnit]
-                    currentTime.append(currentUnitString)
-                }
-                return currentTime.toString()
-            }
-            else -> {
-                currentUnitString = units!![currentUnit]
-                currentTime.append(currentUnitString)
-                return currentTime.toString()
-            }
-        }
+        return getCurrentTimeInStringFormat(resources, millsAfterStart)
     }
 
-    protected fun finishTimer() {
+    private fun finishTimer() {
         timer.let {
             it.cancel()
             it.onFinish()
         }
         currentTime = 1
-        button!!.text = START
+        button.text = START
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt(this.getString(R.string.currentTime), currentTime)
-        outState.putString(this.getString(R.string.buttonState), button?.text as String? ?: START)
+        outState.putString(this.getString(R.string.buttonState), button.text as String? ?: START)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         currentTime = savedInstanceState.getInt(this.getString(R.string.currentTime))
-        textView!!.text = getCurrentNumber(currentTime)
-        button!!.text = savedInstanceState.getString(this.getString(R.string.buttonState))
+        textView.text = getCurrentNumber(currentTime)
+        button.text = savedInstanceState.getString(this.getString(R.string.buttonState))
     }
 }
